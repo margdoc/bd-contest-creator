@@ -1,3 +1,4 @@
 export * from './home';
-export * from './pageOne';
-export * from './pageTwo';
+export * from './login';
+export * from './register';
+export * from './users';

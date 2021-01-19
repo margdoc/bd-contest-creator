@@ -7,11 +7,11 @@ const url = "http://localhost:3000";
 export interface LoginRequest {
     email: string;
     password: string;
-}
+};
 
 export interface TokenResponse {
     token: string;
-}
+};
 
 export interface MeResponse {
     id: string;
@@ -19,15 +19,33 @@ export interface MeResponse {
     displayName: string;
     email: string;
     accessLevel: number;
-}
+};
 
 export interface RegisterRequest {
     displayName: string;
     email: string;
     password: string;
-}
+};
 
 export type AllUsersResponse = Array<MeResponse>;
+
+export interface ContestResponse {
+    id: string;
+    title: string;
+    createdAt: string;
+    startDate: string;
+    endDate: string;
+    userId: number;
+    secret: string;
+};
+
+export interface CreateContestRequest {
+    title: string;
+    startDate: string;
+    endDate: string;
+}
+
+export type AllContestsResponse = Array<ContestResponse>;
 
 class WebAppApi {
     private _client: AxiosInstance;
@@ -114,6 +132,31 @@ class WebAppApi {
         errorHandler?: (error: AxiosError) => void
     ) {
         this.request(this.allUsersApi.bind(this), 0, handler, errorHandler);
+    }
+
+    /* All Contests Request */
+    private allContestApi() {
+        return this._client.get<AllContestsResponse>('/contest/all',  this.authHeader());
+    }
+
+    public getAllContests(
+        handler: (response: AllContestsResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.allContestApi.bind(this), 0, handler, errorHandler);
+    }
+
+    /* Create Contests Request */
+    private createContestApi(contestRequest: CreateContestRequest) {
+        return this._client.post<ContestResponse>('/contest/create', contestRequest,  this.authHeader());
+    }
+
+    public postCreateContest(
+        contestRequest: CreateContestRequest,
+        handler: (response: ContestResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.createContestApi.bind(this), contestRequest, handler, errorHandler);
     }
 }
 

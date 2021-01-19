@@ -25,7 +25,7 @@ export const UsersPage: React.FunctionComponent<PageProps> = AccessWrapper("Admi
             <Table 
                 keys={[['id', 'Id'], ['displayName', 'Display Name'], ['email', 'Email'], ['accessLevel', 'Access']]}
                 elements={users || []}
-            />;
+            />
             <AlertPrompt text={errorMessage} />
         </div>
     );

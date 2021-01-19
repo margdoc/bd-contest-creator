@@ -8,9 +8,8 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
 
-import { HomePage, LoginPage, RegisterPage, UsersPage } from './pages';
+import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController } from './pages';
 import { getAuthToken, removeAuthToken } from './api/auth';
 import { WebAppClient } from './api/client';
 import { User } from './api/user';
@@ -32,7 +31,7 @@ export const App: React.FunctionComponent = ()=> {
     return (
         <Router>
             <div>
-                <Navbar>
+                <Navbar bg="primary" variant="dark">
                     <Nav>
                         <Nav.Item>
                             <Nav.Link as={Link} to="/">Home Page</Nav.Link>
@@ -45,11 +44,16 @@ export const App: React.FunctionComponent = ()=> {
                             </>
                             : <></>
                         }
+                        {user && (user?.accessLevel >= 2)
+                            ? <>
+                                <Nav.Item>
+                                    <Nav.Link  as={Link} to="/contests-controller">Contests Controller</Nav.Link>
+                                </Nav.Item>
+                            </>
+                            : <></>
+                        }
                         <Nav.Item>
                             <Nav.Link as={Link} to="/contests">Contests</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link as={Link} to="/my-contests">My Contests</Nav.Link>
                         </Nav.Item>
                     </Nav>
                     <Navbar.Collapse className="justify-content-end">
@@ -91,6 +95,10 @@ export const App: React.FunctionComponent = ()=> {
                     </Route>
                     <Route path="/register">
                         <RegisterPage user={user} />
+                    </Route>
+
+                    <Route path="/contests-controller">
+                        <ContestsController user={user}/>
                     </Route>
 
                 </Switch>

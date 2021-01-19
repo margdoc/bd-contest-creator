@@ -15,13 +15,13 @@ const Prompt: React.FunctionComponent<{ text?: string }> = ({ text }) => {
 
 export {Prompt as AlertPrompt};
 
-interface Props {
-    user?: User
+export interface PageProps {
+    user?: User;
 }
 
 export const AccessWrapper = (access: AccessType) =>
-    (Component: React.FunctionComponent<Props>) => 
-        ({ user }: Props) => {
+    (Component: React.FunctionComponent<PageProps>) => 
+        ({ user }: PageProps) => {
             if (access === "All") {
                 return <Component user={user} />;
             }
@@ -53,7 +53,3 @@ export const AccessWrapper = (access: AccessType) =>
 
             return <Component user={user} />;
         };
-
-export interface PageProps {
-    user?: User;
-}

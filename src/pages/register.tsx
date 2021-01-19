@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 import { WebAppClient } from "../api/client";
 import { setAuthToken } from "../api/auth";
-import { AccessWrapper, PageProps } from './utils';
+import { AccessWrapper, PageProps, AlertPrompt } from './utils';
 
 
 export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedOut")(({ user }) => {
@@ -11,10 +13,10 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
     const register = (event: React.FormEvent) => {
         event.preventDefault();
         
-        const displayName: string = (document.getElementById("login-displayName")  as HTMLInputElement).value;
-        const email: string = (document.getElementById("login-email")  as HTMLInputElement).value;
-        const password: string = (document.getElementById("login-password")  as HTMLInputElement).value;
-        const retypePassword: string = (document.getElementById("login-retype-password")  as HTMLInputElement).value;
+        const displayName: string = (document.getElementById("register-displayName")  as HTMLInputElement).value;
+        const email: string = (document.getElementById("register-email")  as HTMLInputElement).value;
+        const password: string = (document.getElementById("register-password")  as HTMLInputElement).value;
+        const retypePassword: string = (document.getElementById("register-retype-password")  as HTMLInputElement).value;
 
         if (password !== retypePassword) {
             setError("Typed passwords are different");
@@ -34,17 +36,14 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
     return (
         <div>
             <h1>Register Page</h1>
-            <form onSubmit={register}>
-                <input id="login-displayName" type="text" placeholder="display name" />
-                <input id="login-email" type="text" placeholder="email" />
-                <input id="login-password" type="password" placeholder="password" />
-                <input id="login-retype-password" type="password" placeholder="retype password" />
-                <button type="submit">Register</button>
-            </form>
-            {errorMessage !== ""
-                ? <div>{errorMessage}</div>
-                : <></>
-            }
+            <Form>
+                <Form.Control id="register-displayName" type="text" placeholder="username" />
+                <Form.Control id="register-email" type="text" placeholder="email@example.com" />
+                <Form.Control id="register-password" type="password" placeholder="password" />
+                <Form.Control id="register-retype-password" type="password" placeholder="password" />
+                <Button type="submit" onClick={register}>Register</Button>
+            </Form>
+            <AlertPrompt text={errorMessage} />
         </div>
     );
 });

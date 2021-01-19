@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 import { WebAppClient } from "../api/client";
 import { setAuthToken } from "../api/auth";
@@ -27,11 +29,11 @@ export const LoginPage: React.FunctionComponent<PageProps> = AccessWrapper("Logg
     return (
         <div>
             <h1>Login Page</h1>
-            <form onSubmit={login}>
-                <input id="login-email" type="text" placeholder="email" />
-                <input id="login-password" type="password" placeholder="password" />
-                <button type="submit">Login</button>
-            </form>
+            <Form>
+                <Form.Control id="login-email" type="text" placeholder="email" />
+                <Form.Control id="login-password" type="password" placeholder="password" />
+                <Button type="submit" onClick={login}>Login</Button>
+            </Form>
             <AlertPrompt text={errorMessage} />
         </div>
     );

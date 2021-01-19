@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { DatePicker, RangeDatePicker } from '@y0c/react-datepicker';
+import { RangeDatePicker } from '@y0c/react-datepicker';
 import TimePicker from 'rc-time-picker';
 import '@y0c/react-datepicker/assets/styles/calendar.scss';
 import moment, { Moment } from 'moment';
@@ -53,7 +53,6 @@ export const CreateContestPage: React.FunctionComponent<PageProps> = AccessWrapp
 
     return (
         <div>
-            <h1>Create Contest</h1>
             <Form>
                 <Form.Group>
                     <Form.Control id="contest-title" type="text" placeholder="title" />

@@ -28,7 +28,6 @@ export const LoginPage: React.FunctionComponent<PageProps> = AccessWrapper("Logg
 
     return (
         <div>
-            <h1>Login Page</h1>
             <Form>
                 <Form.Control id="login-email" type="text" placeholder="email" />
                 <Form.Control id="login-password" type="password" placeholder="password" />

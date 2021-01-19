@@ -21,7 +21,6 @@ export const UsersPage: React.FunctionComponent<PageProps> = AccessWrapper("Admi
 
     return (
         <div>
-            <div>All Users</div>
             <Table 
                 keys={[['id', 'Id'], ['displayName', 'Display Name'], ['email', 'Email'], ['accessLevel', 'Access']]}
                 elements={users || []}

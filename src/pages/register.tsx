@@ -35,7 +35,6 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
 
     return (
         <div>
-            <h1>Register Page</h1>
             <Form>
                 <Form.Control id="register-displayName" type="text" placeholder="username" />
                 <Form.Control id="register-email" type="text" placeholder="email@example.com" />

@@ -1,5 +1,6 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
+import moment, { Moment } from 'moment';
 
 import { User } from '../api/user';
 
@@ -53,3 +54,8 @@ export const AccessWrapper = (access: AccessType) =>
 
             return <Component user={user} />;
         };
+
+
+export const dateToString = (date: string) => {
+    return moment(date).format('lll');
+} 

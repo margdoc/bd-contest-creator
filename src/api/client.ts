@@ -47,6 +47,20 @@ export interface CreateContestRequest {
 
 export type AllContestsResponse = Array<ContestResponse>;
 
+export interface ContestRequest {
+    id: number;
+}
+
+export interface ParticipationRequest {
+    contest_secret: string;
+}
+
+export interface ParticipationResponse {
+    id: number;
+    contestId: number;
+    userId: number;
+}
+
 class WebAppApi {
     private _client: AxiosInstance;
 
@@ -146,6 +160,30 @@ class WebAppApi {
         this.request(this.allContestApi.bind(this), 0, handler, errorHandler);
     }
 
+    /* All Contests Request as Admin */
+    private adminContestApi() {
+        return this._client.get<AllContestsResponse>('/contest/my/as_admin',  this.authHeader());
+    }
+
+    public getAdminContests(
+        handler: (response: AllContestsResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.adminContestApi.bind(this), 0, handler, errorHandler);
+    }
+
+    /* All Contests Request as User */
+    private userContestApi() {
+        return this._client.get<AllContestsResponse>('/contest/my/as_user',  this.authHeader());
+    }
+
+    public getUserContests(
+        handler: (response: AllContestsResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.userContestApi.bind(this), 0, handler, errorHandler);
+    }
+
     /* Create Contests Request */
     private createContestApi(contestRequest: CreateContestRequest) {
         return this._client.post<ContestResponse>('/contest/create', contestRequest,  this.authHeader());
@@ -157,6 +195,32 @@ class WebAppApi {
         errorHandler?: (error: AxiosError) => void
     ) {
         this.request(this.createContestApi.bind(this), contestRequest, handler, errorHandler);
+    }
+
+    /* Get Contest Request */
+    private getContestApi(contestRequest: ContestRequest) {
+        return this._client.get<ContestResponse>(`/contest/${contestRequest.id}`,  this.authHeader());
+    }
+
+    public getContest(
+        contestRequest: ContestRequest,
+        handler: (response: ContestResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.getContestApi.bind(this), contestRequest, handler, errorHandler);
+    }
+
+    /* Participation Request */
+    private postParticipationApi(participation: ParticipationRequest) {
+        return this._client.get<ParticipationResponse>(`/participation/by_contest/add/${participation.contest_secret}`,  this.authHeader());
+    }
+
+    public postParticipation(
+        participation: ParticipationRequest,
+        handler: (response: ParticipationResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.postParticipationApi.bind(this), participation, handler, errorHandler);
     }
 }
 

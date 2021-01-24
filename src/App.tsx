@@ -9,10 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController } from './pages';
+import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController, ContestController, MyContestsPage, ContestPage } from './pages';
 import { getAuthToken, removeAuthToken } from './api/auth';
 import { WebAppClient } from './api/client';
 import { User } from './api/user';
+import { AddParticipantController } from './pages/add-participant';
 
 
 export const App: React.FunctionComponent = ()=> {
@@ -30,79 +31,95 @@ export const App: React.FunctionComponent = ()=> {
 
     return (
         <Router>
-            <div>
-                <Navbar bg="primary" variant="dark">
-                    <Nav>
-                        <Nav.Item>
-                            <Nav.Link as={Link} to="/">Home Page</Nav.Link>
-                        </Nav.Item>
-                        {user?.accessLevel === 3
-                            ? <>
-                                <Nav.Item>
-                                    <Nav.Link  as={Link} to="/users">All Users</Nav.Link>
-                                </Nav.Item>
-                            </>
-                            : <></>
-                        }
-                        {user && (user?.accessLevel >= 2)
-                            ? <>
-                                <Nav.Item>
-                                    <Nav.Link  as={Link} to="/contests-controller">Contests Controller</Nav.Link>
-                                </Nav.Item>
-                            </>
-                            : <></>
-                        }
-                        <Nav.Item>
-                            <Nav.Link as={Link} to="/contests">Contests</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                    <Navbar.Collapse className="justify-content-end">
+                <div>
+                    <Navbar bg="primary" variant="dark">
                         <Nav>
-                            {user 
+                            <Nav.Item>
+                                <Nav.Link as={Link} to="/">Home Page</Nav.Link>
+                            </Nav.Item>
+                            {user?.accessLevel === 3
                                 ? <>
                                     <Nav.Item>
-                                        <Nav.Link onClick={() => {
-                                            removeAuthToken();
-                                            window.location.reload();
-                                        }}>Logout</Nav.Link>
+                                        <Nav.Link  as={Link} to="/users">All Users</Nav.Link>
                                     </Nav.Item>
                                 </>
-                                :  <>
-                                    <Nav.Item>
-                                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link as={Link} to="/register">Register</Nav.Link>
-                                    </Nav.Item>
-                                </>
+                                : <></>
                             }
+                            {user && (user?.accessLevel >= 2)
+                                ? <>
+                                    <Nav.Item>
+                                        <Nav.Link  as={Link} to="/contests-controller">Contests Controller</Nav.Link>
+                                    </Nav.Item>
+                                </>
+                                : <></>
+                            }
+                            <Nav.Item>
+                                <Nav.Link as={Link} to="/contests">Contests</Nav.Link>
+                            </Nav.Item>
                         </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+                        <Navbar.Collapse className="justify-content-end">
+                            <Nav>
+                                {user 
+                                    ? <>
+                                        <Nav.Item>
+                                            <Nav.Link onClick={() => {
+                                                removeAuthToken();
+                                                window.location.reload();
+                                            }}>Logout</Nav.Link>
+                                        </Nav.Item>
+                                    </>
+                                    :  <>
+                                        <Nav.Item>
+                                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                                        </Nav.Item>
+                                    </>
+                                }
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
 
-                <Switch>
+                    <Switch>
 
-                    <Route path="/" exact>
-                        <HomePage user={user} />
-                    </Route>
+                        <Route path="/" exact>
+                            <HomePage user={user} />
+                        </Route>
 
-                    <Route path="/users" >
-                        <UsersPage user={user} />
-                    </Route>
+                        <Route path="/users" >
+                            <UsersPage user={user} />
+                        </Route>
 
-                    <Route path="/login">
-                        <LoginPage user={user} />
-                    </Route>
-                    <Route path="/register">
-                        <RegisterPage user={user} />
-                    </Route>
+                        <Route path="/login">
+                            <LoginPage user={user} />
+                        </Route>
+                        <Route path="/register">
+                            <RegisterPage user={user} />
+                        </Route>
 
-                    <Route path="/contests-controller">
-                        <ContestsController user={user}/>
-                    </Route>
+                        <Route path="/contests-controller">
+                            <ContestsController user={user}/>
+                        </Route>
 
-                </Switch>
-            </div>
-        </Router>
-    );
+                        <Route path="/contest-controller/:id">
+                            <ContestController user={user} />
+                        </Route>
+
+                        <Route path="/contests">
+                            <MyContestsPage user={user} />
+                        </Route>
+
+                        <Route path="/contest/:id">
+                            <ContestPage user={user} />
+                        </Route>
+
+                        <Route path="/join-contest/:contest_secret">
+                            <AddParticipantController user={user} />
+                        </Route>
+
+                    </Switch>
+                </div>
+            </Router>
+        );
 };

@@ -1,7 +1,6 @@
 const key = "auth-token";
 
 export const setAuthToken = (token: string) => {
-    console.log(token);
     window.localStorage.setItem(key, token);
 }
 

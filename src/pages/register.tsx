@@ -39,7 +39,7 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
                 <Form.Control id="register-displayName" type="text" placeholder="username" />
                 <Form.Control id="register-email" type="text" placeholder="email@example.com" />
                 <Form.Control id="register-password" type="password" placeholder="password" />
-                <Form.Control id="register-retype-password" type="password" placeholder="password" />
+                <Form.Control id="register-retype-password" type="password" placeholder="retype password" />
                 <Button type="submit" onClick={register}>Register</Button>
             </Form>
             <AlertPrompt text={errorMessage} />

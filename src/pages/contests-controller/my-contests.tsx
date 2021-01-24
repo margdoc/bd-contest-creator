@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import { Table } from '../components';
-import { AccessWrapper, PageProps, AlertPrompt, dateToString } from './utils';
-import { WebAppClient, ContestResponse} from '../api/client';
+import { Table } from '../../components';
+import { AccessWrapper, PageProps, AlertPrompt, dateToString } from '../utils';
+import { WebAppClient, ContestResponse} from '../../api/client';
 
-export const AllContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("Admin")(({ user }) => {
+export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
     const [contests, setContests] = useState<Array<ContestResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
 
     useEffect(() => {
         if (contests === undefined) {
-            WebAppClient.getAllContests(response => {
+            WebAppClient.getAdminContests(response => {
                 setContests(response);
             }, error => {
                 setError(error.response?.data);

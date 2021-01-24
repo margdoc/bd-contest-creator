@@ -7,9 +7,10 @@ import {
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-import { AllContestsPage } from './allcontests';
+import { AllContestsPage } from './all-contests';
+import { MyContestsPage } from './my-contests';
 import { CreateContestPage } from './create-contest';
-import { AccessWrapper, PageProps } from './utils';
+import { AccessWrapper, PageProps } from '../utils';
 
 export const ContestsController: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
     const match = useRouteMatch();
@@ -39,6 +40,9 @@ export const ContestsController: React.FunctionComponent<PageProps> = AccessWrap
             </Route>
             <Route path={`${match.url}/create`} exact>
                 <CreateContestPage user={user} />
+            </Route>
+            <Route path={`${match.url}/my`} exact>
+                <MyContestsPage user={user} />
             </Route>
         </div>;
 });

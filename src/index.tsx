@@ -2,9 +2,7 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { CssBaseline, ThemeProvider, createMuiTheme } from '@material-ui/core';
 import { BrowserRouter } from 'react-router-dom';
-import * as PXBThemes from '@pxblue/react-themes';
 import 'typeface-open-sans';
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,12 +10,9 @@ import './index.css';
 
 ReactDOM.render(
     <React.StrictMode>
-        <ThemeProvider theme={createMuiTheme(PXBThemes.blue)}>
-            <BrowserRouter>
-                <CssBaseline />
-                <App />
-            </BrowserRouter>
-        </ThemeProvider>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

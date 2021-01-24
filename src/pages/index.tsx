@@ -6,3 +6,6 @@ export * from './contests-controller';
 export * from './contest-controller';
 export * from './my-contests';
 export * from './contest';
+export * from './tasks/create-task';
+export * from './tasks/task-controller';
+export * from './tasks/task';

@@ -61,6 +61,22 @@ export interface ParticipationResponse {
     userId: number;
 }
 
+export interface CreateTaskRequest {
+    contest_id: number;
+    text: string;
+}
+
+export interface TaskResponse {
+    id: number
+    contestId: number;
+    text: string;
+}
+
+export interface TaskRequest {
+    id: number;
+    contestId: number;
+}
+
 class WebAppApi {
     private _client: AxiosInstance;
 
@@ -184,7 +200,7 @@ class WebAppApi {
         this.request(this.userContestApi.bind(this), 0, handler, errorHandler);
     }
 
-    /* Create Contests Request */
+    /* Create Contest Request */
     private createContestApi(contestRequest: CreateContestRequest) {
         return this._client.post<ContestResponse>('/contest/create', contestRequest,  this.authHeader());
     }
@@ -195,6 +211,19 @@ class WebAppApi {
         errorHandler?: (error: AxiosError) => void
     ) {
         this.request(this.createContestApi.bind(this), contestRequest, handler, errorHandler);
+    }
+
+    /* Create Task Request */
+    private createTaskApi(taskRequest: CreateTaskRequest) {
+        return this._client.post<TaskResponse>(`/task/by_contest/add/${taskRequest.contest_id}`, { text: taskRequest.text },  this.authHeader());
+    }
+
+    public postCreateTask(
+        taskRequest: CreateTaskRequest,
+        handler: (response: TaskResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.createTaskApi.bind(this), taskRequest, handler, errorHandler);
     }
 
     /* Get Contest Request */
@@ -208,6 +237,41 @@ class WebAppApi {
         errorHandler?: (error: AxiosError) => void
     ) {
         this.request(this.getContestApi.bind(this), contestRequest, handler, errorHandler);
+    }
+
+    /* Get Contest Tasks Request */
+    private getContestTasksApi(contestRequest: ContestRequest) {
+        return this._client.get<Array<TaskResponse>>(`/task/by_contest/${contestRequest.id}`,  this.authHeader());
+    }
+
+    public getContestTasks(
+        contestRequest: ContestRequest,
+        handler: (response: Array<TaskResponse>) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.getContestTasksApi.bind(this), contestRequest, handler, errorHandler);
+    }
+
+    /* Get Task Request */
+    private getTaskApi(taskRequest: TaskRequest) {
+        return this._client.get<TaskResponse>(`/task/by_contest/${taskRequest.id}`,  this.authHeader());
+    }
+
+    public getTask(
+        taskRequest: TaskRequest,
+        handler: (response: TaskResponse) => void,
+        errorHandler?: (error: AxiosError) => void
+    ) {
+        this.request(this.getTaskApi.bind(this), taskRequest, (response: Array<TaskResponse>) => {
+            const task = response.find(task => task.id === taskRequest.id);
+
+            if (task !== undefined) {
+                return handler(task);
+            }
+            else {
+                return undefined;
+            }
+        }, errorHandler);
     }
 
     /* Participation Request */

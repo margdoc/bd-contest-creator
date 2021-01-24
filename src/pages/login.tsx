@@ -22,7 +22,6 @@ export const LoginPage: React.FunctionComponent<PageProps> = AccessWrapper("Logg
             window.location.href = '/';
         }, error => {
             setError(error.response?.data.errors);
-            console.log(error);
         });
     };
 

@@ -1,8 +1,10 @@
 import React from 'react';
-import { Table as BSTable } from 'react-bootstrap';
+import BSTable from 'react-bootstrap/Table';
 
-const Row: React.FunctionComponent<{ values: Array<string> }> = ({ values }) => {
-    return <tr>
+const Row: React.FunctionComponent<{ values: Array<string>, onClick?: () => void }> = ({ values, onClick }) => {
+    return <tr onClick={onClick} style={{
+        ...(onClick !== undefined ? { cursor: 'pointer' } : {})
+    }}>
             {values.map(value => 
                 <td>
                     {value}
@@ -14,10 +16,11 @@ const Row: React.FunctionComponent<{ values: Array<string> }> = ({ values }) => 
 interface Props {
     keys: Array<[string, string]>;
     elements: Array<any>;
+    onClick?: Array<(() => void)>
 }
 
-export const Table: React.FunctionComponent<Props> = ({ keys, elements }) => {
-    return <BSTable striped bordered>
+export const Table: React.FunctionComponent<Props> = ({ keys, elements, onClick }) => {
+    return <BSTable striped bordered hover>
         <thead>
             <tr>
                 {keys.map(([_, keyText]) => 
@@ -26,9 +29,11 @@ export const Table: React.FunctionComponent<Props> = ({ keys, elements }) => {
                     </th>
                 )}
             </tr>
-            {elements.map(element => 
-                <Row  values={keys.map(([keyValue, _]) => element[keyValue])} />
-            )}
         </thead>
+        <tbody>
+            {elements.map((element, i) => 
+                <Row  values={keys.map(([keyValue, _]) => element[keyValue])} onClick={onClick && onClick[i]} />
+            )}
+        </tbody>
     </BSTable>;
 };

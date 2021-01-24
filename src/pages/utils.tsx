@@ -4,6 +4,8 @@ import moment, { Moment } from 'moment';
 
 import { User } from '../api/user';
 
+export const URL = "http://localhost:3006";
+
 export type AccessType = "All" | "LoggedIn" | "LoggedOut" | "Admin" | "ContestCreator";
 
 const Prompt: React.FunctionComponent<{ text?: string }> = ({ text }) => {

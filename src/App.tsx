@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController, ContestController, MyContestsPage, ContestPage } from './pages';
+import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController, ContestController, MyContestsPage, ContestPage, TaskControllerPage, TaskPage, CreateTaskPage } from './pages';
 import { getAuthToken, removeAuthToken } from './api/auth';
 import { WebAppClient } from './api/client';
 import { User } from './api/user';
@@ -102,12 +102,24 @@ export const App: React.FunctionComponent = ()=> {
                             <ContestsController user={user}/>
                         </Route>
 
+                        <Route path="/contest-controller/:id/create-task">
+                            <CreateTaskPage user={user} />
+                        </Route>
+
+                        <Route path="/contest-controller/:contestId/task/:id">
+                            <TaskControllerPage user={user} />
+                        </Route>
+
                         <Route path="/contest-controller/:id">
                             <ContestController user={user} />
                         </Route>
 
                         <Route path="/contests">
                             <MyContestsPage user={user} />
+                        </Route>
+
+                        <Route path="/contest/:contestId/task/:id">
+                            <TaskPage user={user} />
                         </Route>
 
                         <Route path="/contest/:id">

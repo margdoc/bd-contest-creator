@@ -4,15 +4,15 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
 
 import { Table } from '../../components';
-import { AccessWrapper, PageProps, AlertPrompt, dateToString } from '../utils';
-import { WebAppClient, ContestResponse } from '../../api/client';
+import { AccessWrapper, PageProps, AlertPrompt, dateToString, URL } from '../utils';
+import { WebAppClient, ContestResponse, TaskResponse } from '../../api/client';
 
 export const ContestController: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
     const [contest, setContest] = useState<ContestResponse | undefined>(undefined);
+    const [tasks, setTasks] = useState<Array<TaskResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
 
     const match = useRouteMatch<{ id: string }>();
@@ -22,6 +22,14 @@ export const ContestController: React.FunctionComponent<PageProps> = AccessWrapp
         if (contest === undefined) {
             WebAppClient.getContest({ id: parseInt(id) }, response => {
                 setContest(response);
+
+                WebAppClient.getContestTasks({ id: parseInt(id) }, response => {
+                    setTasks(response);
+                }, error => {
+                    const errors = error.response?.data.errors;
+                    setError((typeof errors === 'string' || errors instanceof String) ? errors : errors.message);
+                });
+
             }, error => {
                 const errors = error.response?.data.errors;
                 setError((typeof errors === 'string' || errors instanceof String) ? errors : errors.message);
@@ -42,6 +50,20 @@ export const ContestController: React.FunctionComponent<PageProps> = AccessWrapp
                             createdAt: dateToString(contest.createdAt)
                         })) } 
                     />
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>Join contest link</Form.Label>
+                            <Form.Control type="text" value={`${URL}/join-contest/${contest.secret}`} disabled />
+                        </Form.Group>
+                    </Form>
+                    <div>Tasks</div>
+                    {tasks
+                    ? <>
+                        <Table keys={[['id', 'Id'], ['text', 'Content']]} elements={tasks} />
+                    </>
+                    : <>Loading...</>
+                    }
+                    <Link to={`/contest-controller/${id}/create-task`}>Add new task</Link>
                 </>
                 : <>Loading...</>
             }

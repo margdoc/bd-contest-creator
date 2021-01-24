@@ -13,7 +13,8 @@ export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper(
             WebAppClient.getUserContests(response => {
                 setContests(response);
             }, error => {
-                setError(error.response?.data);
+                const errors = error.response?.data.errors;
+                setError((typeof errors === 'string' || errors instanceof String) ? errors : errors.message);
             });
         }
     });
@@ -27,6 +28,9 @@ export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper(
                     startDate: dateToString(contest.startDate),
                     endDate: dateToString(contest.endDate)
                 })) : []}
+                onClick={contests ? contests.map(contest => (
+                    () => window.location.href = `/contest/${contest.id}`
+                )) : []}
             />
             <AlertPrompt text={errorMessage} />
         </div>

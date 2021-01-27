@@ -18,7 +18,7 @@ export const ContestsController: React.FunctionComponent<PageProps> = AccessWrap
     return <div>
             <Navbar bg="primary" variant="dark">
                 <Nav>
-                    { user 
+                    { user?.accessLevel === 3
                         ? <>
                             <Nav.Item>
                                 <Nav.Link as={Link} to={`${match.url}/all`}>All Contests</Nav.Link>
@@ -27,10 +27,10 @@ export const ContestsController: React.FunctionComponent<PageProps> = AccessWrap
                         : <></>
                     }
                     <Nav.Item>
-                        <Nav.Link as={Link} to={`${match.url}/create`}>Create Contests</Nav.Link>
+                        <Nav.Link as={Link} to={`${match.url}/my`}>My Contests</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link as={Link} to={`${match.url}/my`}>My Contests</Nav.Link>
+                        <Nav.Link as={Link} to={`${match.url}/create`}>Create Contests</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Navbar>

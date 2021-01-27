@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { WebAppClient } from "../../api/client";
-import { AccessWrapper, PageProps, AlertPrompt } from '../utils';
+import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from '../utils';
 
 export const CreateContestPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
     const [errorMessage, setError] = useState<string>("");
@@ -31,25 +31,28 @@ export const CreateContestPage: React.FunctionComponent<PageProps> = AccessWrapp
     };
 
     return (
-        <div>
-            <Form>
-                <Form.Group>
-                    <Form.Label>Title</Form.Label><br/>
-                    <Form.Control id="contest-title" type="text" placeholder="title" />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Start</Form.Label><br/>
-                    <Form.Control id="contest-start-date" type="date"  />
-                    <Form.Control id="contest-start-time" type="time" value="09:00" />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>End</Form.Label><br/>
-                    <Form.Control id="contest-end-date" type="date"  />
-                    <Form.Control id="contest-end-time" type="time" value="14:00" />
-                </Form.Group>
-                <Button type="submit" onClick={create}>Create</Button>
-            </Form>
-            <AlertPrompt text={errorMessage} />
-        </div>
+        <>
+            <FormWrapper>
+            <h4>Create Contest</h4>
+                <Form>
+                    <Form.Group>
+                        <Form.Label>Title</Form.Label><br/>
+                        <Form.Control id="contest-title" type="text" placeholder="title" />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Start</Form.Label><br/>
+                        <Form.Control id="contest-start-date" type="date"  />
+                        <Form.Control id="contest-start-time" type="time" value="09:00" />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>End</Form.Label><br/>
+                        <Form.Control id="contest-end-date" type="date"  />
+                        <Form.Control id="contest-end-time" type="time" value="14:00" />
+                    </Form.Group>
+                    <Button type="submit" onClick={create}>Create</Button>
+                </Form>
+                <AlertPrompt text={errorMessage} />
+            </FormWrapper>
+        </>
     );
 });

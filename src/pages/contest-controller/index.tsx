@@ -5,6 +5,7 @@ import {
     Link
 } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 import { Table } from '../../components';
 import { AccessWrapper, PageProps, AlertPrompt, dateToString, URL } from '../utils';
@@ -53,7 +54,7 @@ export const ContestController: React.FunctionComponent<PageProps> = AccessWrapp
                     <Form>
                         <Form.Group>
                             <Form.Label>Join contest link</Form.Label>
-                            <Form.Control type="text" value={`${URL}/join-contest/${contest.secret}`} disabled />
+                            <Form.Control type="text" value={`${URL}/join-contest/${contest.secret}`} readOnly />
                         </Form.Group>
                     </Form>
                     <div>Tasks</div>
@@ -63,7 +64,7 @@ export const ContestController: React.FunctionComponent<PageProps> = AccessWrapp
                     </>
                     : <>Loading...</>
                     }
-                    <Link to={`/contest-controller/${id}/create-task`}>Add new task</Link>
+                    <Button as={Link} to={`/contest-controller/${id}/create-task`}>Add new task</Button>
                 </>
                 : <>Loading...</>
             }

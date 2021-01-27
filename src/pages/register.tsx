@@ -4,8 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 import { WebAppClient } from "../api/client";
 import { setAuthToken } from "../api/auth";
-import { AccessWrapper, PageProps, AlertPrompt } from './utils';
-
+import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from './utils';
 
 export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedOut")(({ user }) => {
     const [errorMessage, setError] = useState("");
@@ -34,7 +33,7 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
     };
 
     return (
-        <div>
+        <FormWrapper>
             <Form>
                 <Form.Control id="register-displayName" type="text" placeholder="username" />
                 <Form.Control id="register-email" type="text" placeholder="email@example.com" />
@@ -43,6 +42,6 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
                 <Button type="submit" onClick={register}>Register</Button>
             </Form>
             <AlertPrompt text={errorMessage} />
-        </div>
+        </FormWrapper>
     );
 });

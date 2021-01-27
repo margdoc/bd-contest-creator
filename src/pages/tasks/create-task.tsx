@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import { WebAppClient } from "../../api/client";
-import { AccessWrapper, PageProps, AlertPrompt } from '../utils';
+import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from '../utils';
 
 export const CreateTaskPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
     const [errorMessage, setError] = useState<string>("");
@@ -29,15 +29,16 @@ export const CreateTaskPage: React.FunctionComponent<PageProps> = AccessWrapper(
     };
 
     return (
-        <div>
+        <FormWrapper>
+        <h4>Create Task</h4>
             <Form>
                 <Form.Group>
                     <Form.Label>Content</Form.Label><br/>
-                    <Form.Control id="task-content" type="textarea" />
+                    <Form.Control as={"textarea"} id="task-content"  />
                 </Form.Group>
                 <Button type="submit" onClick={create}>Create</Button>
             </Form>
             <AlertPrompt text={errorMessage} />
-        </div>
+        </FormWrapper>
     );
 });

@@ -4,8 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 import { WebAppClient } from "../api/client";
 import { setAuthToken } from "../api/auth";
-import { AccessWrapper, PageProps, AlertPrompt } from './utils';
-
+import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from './utils';
 
 export const LoginPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedOut")(({ user }) => {
     const [errorMessage, setError] = useState("");
@@ -26,13 +25,13 @@ export const LoginPage: React.FunctionComponent<PageProps> = AccessWrapper("Logg
     };
 
     return (
-        <div>
+        <FormWrapper>
             <Form>
                 <Form.Control id="login-email" type="text" placeholder="email" />
                 <Form.Control id="login-password" type="password" placeholder="password" />
                 <Button type="submit" onClick={login}>Login</Button>
             </Form>
             <AlertPrompt text={errorMessage} />
-        </div>
+        </FormWrapper>
     );
 });

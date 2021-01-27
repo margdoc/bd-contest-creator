@@ -3,7 +3,7 @@ import {
     useRouteMatch
 } from "react-router-dom";
 import { Table } from '../../components';
-import { AccessWrapper, PageProps, AlertPrompt, dateToString } from '../utils';
+import { AccessWrapper, PageProps, AlertPrompt } from '../utils';
 import { WebAppClient, TaskResponse} from '../../api/client';
 
 export const TaskPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedIn")(({ user }) => {

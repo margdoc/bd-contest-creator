@@ -1,6 +1,7 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
+import styled from 'styled-components';
 
 import { User } from '../api/user';
 
@@ -60,4 +61,13 @@ export const AccessWrapper = (access: AccessType) =>
 
 export const dateToString = (date: string) => {
     return moment(date).format('lll');
-} 
+};
+
+export const FormWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    margin-top: 5%;
+`;

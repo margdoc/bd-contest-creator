@@ -5,7 +5,7 @@ import {
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { WebAppClient } from "../../api/client";
+import { WebAppClient } from "../../api";
 import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from '../utils';
 
 export const CreateTaskPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {

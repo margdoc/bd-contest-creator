@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Table } from '../components';
 import { AccessWrapper, PageProps, AlertPrompt, dateToString } from './utils';
-import { WebAppClient, ContestResponse} from '../api/client';
+import { WebAppClient, Model} from '../api';
 
 export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedIn")(({ user }) => {
-    const [contests, setContests] = useState<Array<ContestResponse> | undefined>(undefined);
+    const [contests, setContests] = useState<Array<Model.ContestResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
 
     useEffect(() => {

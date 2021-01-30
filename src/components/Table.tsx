@@ -7,7 +7,7 @@ import ArrowDown  from './assets/arrow-down.png';
 import ArrowUp  from './assets/arrow-up.png';
 
 const Th = styled.th`
-    cursor: 'pointer';
+    cursor: pointer;
 
     :hover {
         background-color: rgb(240, 240, 240);

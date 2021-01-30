@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Table } from '../../components';
 import { AccessWrapper, PageProps, AlertPrompt, dateToString } from '../utils';
-import { WebAppClient, ContestResponse} from '../../api/client';
+import { WebAppClient, Model} from '../../api';
 
 export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
-    const [contests, setContests] = useState<Array<ContestResponse> | undefined>(undefined);
+    const [contests, setContests] = useState<Array<Model.ContestResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper(
     return (
         <div>
             <Table 
-                keys={[['id', 'Id'], ['title', 'Title'], ['startDate', 'Start'], ['endDate', 'End'], ['secret', 'Secret'], ['userId', 'Created By'], ['createdAt', 'Created At']]}
+                keys={[['id', 'Id'], ['title', 'Title'], ['startDate', 'Start'], ['endDate', 'End'], ['secret', 'Secret'], ['createdAt', 'Created At']]}
                 elements={contests ? contests.map(contest => ({
                     ...contest,
                     startDate: dateToString(contest.startDate),

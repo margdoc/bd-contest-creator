@@ -9,3 +9,4 @@ export * from './contest';
 export * from './tasks/create-task';
 export * from './tasks/task-controller';
 export * from './tasks/task';
+export * from './add-participant';

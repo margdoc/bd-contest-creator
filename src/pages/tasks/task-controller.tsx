@@ -4,10 +4,11 @@ import {
 } from "react-router-dom";
 import { Table } from '../../components';
 import { AccessWrapper, PageProps, AlertPrompt, dateToString } from '../utils';
-import { WebAppClient, TaskResponse} from '../../api/client';
+import { WebAppClient, Model} from '../../api';
 
 export const TaskControllerPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
-    const [task, setTask] = useState<TaskResponse | undefined>(undefined);
+    const [task, setTask] = useState<Model.TaskResponse | undefined>(undefined);
+    const [solutions, setSolutions] = useState<Array<Model.SolutionResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
 
     const match = useRouteMatch<{ contestId: string, id: string }>();
@@ -17,6 +18,7 @@ export const TaskControllerPage: React.FunctionComponent<PageProps> = AccessWrap
         if (task === undefined) {
             WebAppClient.getTask({ id: parseInt(id), contestId: parseInt(contestId) }, response => {
                 setTask(response);
+
             }, error => {
                 setError(error.response?.data);
             });
@@ -27,8 +29,19 @@ export const TaskControllerPage: React.FunctionComponent<PageProps> = AccessWrap
         <div>
             {task
                 ? <>
-                    <h5>Task {id}</h5>
+                    <h3>Task {id}</h3>
+                    <br/>
+                    <h4>Content</h4>
                     <div>{task?.text}</div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    {solutions
+                    ? <>
+                        <Table keys={[['id', 'Id'], ['text', 'Solution'], ['comment', 'Comment'], ['mark', 'Mark']]} elements={solutions} />
+                    </>
+                    : <>Loading...</>
+                    }
                 </>
                 : <>Loading</>
             }

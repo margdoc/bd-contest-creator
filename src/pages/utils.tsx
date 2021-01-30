@@ -3,9 +3,9 @@ import Alert from 'react-bootstrap/Alert';
 import moment from 'moment';
 import styled from 'styled-components';
 
-import { User } from '../api/user';
+import { Model } from '../api';
 
-export const URL = "http://localhost:3006";
+export const URL = 'https://localhost:3006';
 
 export type AccessType = "All" | "LoggedIn" | "LoggedOut" | "Admin" | "ContestCreator";
 
@@ -20,7 +20,7 @@ const Prompt: React.FunctionComponent<{ text?: string }> = ({ text }) => {
 export {Prompt as AlertPrompt};
 
 export interface PageProps {
-    user?: User;
+    user?: Model.User | null;
 }
 
 export const AccessWrapper = (access: AccessType) =>

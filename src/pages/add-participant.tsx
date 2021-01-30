@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-    useRouteMatch,
-    Route,
-    Link
+    useRouteMatch
 } from "react-router-dom";
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
 
 import { AccessWrapper, PageProps, AlertPrompt } from './utils';
 import { WebAppClient } from '../api/client';

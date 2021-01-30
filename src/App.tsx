@@ -8,26 +8,40 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Spinner from 'react-bootstrap/Spinner';
+import Image from 'react-bootstrap/Image';
 
-import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController, ContestController, MyContestsPage, ContestPage, TaskControllerPage, TaskPage, CreateTaskPage } from './pages';
-import { getAuthToken, removeAuthToken } from './api/auth';
-import { WebAppClient } from './api/client';
-import { User } from './api/user';
-import { AddParticipantController } from './pages/add-participant';
+import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController, ContestController, MyContestsPage, ContestPage, TaskControllerPage, TaskPage, CreateTaskPage, AddParticipantController } from './pages';
+import { getAuthToken, removeAuthToken, setAuthToken } from './api/auth';
+import { WebAppClient, Model } from './api';
 
 
 export const App: React.FunctionComponent = ()=> {
-    const [user, setUser] = useState<User | undefined>(undefined);
+    const [user, setUser] = useState<Model.User | undefined | null>(undefined);
 
     useEffect(() => {
         const isLoggedIn = getAuthToken() != null;
     
-        if (isLoggedIn && user === undefined) {
-            WebAppClient.getMe(response => {
-                setUser({...response});
-            });
+        if (user === undefined) {
+            if (isLoggedIn) {
+                WebAppClient.getMe(response => {
+                    setUser({...response});
+                }, error => {
+                    removeAuthToken();
+                    setUser(null);
+                });
+            } else {
+                setUser(null);
+            }
         }
     });
+
+    if (user === undefined) {
+        return <div>Loading...</div>;
+        /*return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+            <Spinner animation="grow" variant="primary" style={{ width: "10vw", height: "10vw" }} />
+        </div>;*/
+    }
 
     return (
         <Router>
@@ -48,7 +62,7 @@ export const App: React.FunctionComponent = ()=> {
                             {user && (user?.accessLevel >= 2)
                                 ? <>
                                     <Nav.Item>
-                                        <Nav.Link  as={Link} to="/contests-controller">Contests Controller</Nav.Link>
+                                        <Nav.Link  as={Link} to="/contests-controller/my">Contests Controller</Nav.Link>
                                     </Nav.Item>
                                 </>
                                 : <></>
@@ -66,6 +80,10 @@ export const App: React.FunctionComponent = ()=> {
                                                 removeAuthToken();
                                                 window.location.reload();
                                             }}>Logout</Nav.Link>
+                                            {user.photoURL
+                                                ? <Image src={user.photoURL} rounded />
+                                                : <></>
+                                            }
                                         </Nav.Item>
                                     </>
                                     :  <>
@@ -120,6 +138,10 @@ export const App: React.FunctionComponent = ()=> {
 
                         <Route path="/contest/:contestId/task/:id">
                             <TaskPage user={user} />
+                        </Route>
+
+                        <Route path="/contest/:contestId/task-controller/:id">
+                            <TaskControllerPage user={user} />
                         </Route>
 
                         <Route path="/contest/:id">

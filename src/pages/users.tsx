@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Table } from '../components';
 import { AccessWrapper, PageProps, AlertPrompt } from './utils';
-import { WebAppClient } from '../api/client';
-import { User } from '../api/user';
+import { WebAppClient, Model } from '../api';
 
 export const UsersPage: React.FunctionComponent<PageProps> = AccessWrapper("Admin")(({ user }) => {
-    const [users, setUsers] = useState<Array<User> | undefined>(undefined);
+    const [users, setUsers] = useState<Array<Model.User> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
 
     useEffect(() => {

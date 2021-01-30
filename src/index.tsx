@@ -7,6 +7,10 @@ import 'typeface-open-sans';
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 ReactDOM.render(
     <React.StrictMode>

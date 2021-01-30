@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { WebAppClient } from "../../api/client";
+import { WebAppClient } from "../../api";
 import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from '../utils';
 
 export const CreateContestPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
@@ -22,7 +22,7 @@ export const CreateContestPage: React.FunctionComponent<PageProps> = AccessWrapp
             startDate: `"${new Date(Date.parse(startDate + ' ' + startTime)).toJSON()}"`, 
             endDate: `"${new Date(Date.parse(endDate + ' ' + endTime)).toJSON()}"` 
         }, response => {
-            window.location.href = '/contests-controller/my';
+            window.location.href = `/contest-controller/${response.id}`;
         }, error => {
             const errors = error.response?.data.errors;
             setError((typeof errors === 'string' || errors instanceof String) ? errors : errors.message);
@@ -42,12 +42,12 @@ export const CreateContestPage: React.FunctionComponent<PageProps> = AccessWrapp
                     <Form.Group>
                         <Form.Label>Start</Form.Label><br/>
                         <Form.Control id="contest-start-date" type="date"  />
-                        <Form.Control id="contest-start-time" type="time" value="09:00" />
+                        <Form.Control id="contest-start-time" type="time" defaultValue="09:00" />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>End</Form.Label><br/>
                         <Form.Control id="contest-end-date" type="date"  />
-                        <Form.Control id="contest-end-time" type="time" value="14:00" />
+                        <Form.Control id="contest-end-time" type="time" defaultValue="14:00" />
                     </Form.Group>
                     <Button type="submit" onClick={create}>Create</Button>
                 </Form>

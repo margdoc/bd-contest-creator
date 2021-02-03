@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
 import { Table } from '../components';
-import { AccessWrapper, PageProps, AlertPrompt, dateToString } from './utils';
+import { AccessWrapper, PageProps, AlertPrompt, dateToString, buildError } from './utils';
 import { WebAppClient, Model} from '../api';
 
 export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedIn")(({ user }) => {
     const [contests, setContests] = useState<Array<Model.ContestResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
+    const [sorting, setSorting] = useState<Model.Sorting | undefined>(undefined);
+
+    const setTableSorting = (tableSorting?: Model.Sorting) => {
+        setSorting(tableSorting);
+    }
 
     useEffect(() => {
-        if (contests === undefined) {
-            WebAppClient.getUserContests(response => {
-                setContests(response);
-            }, error => {
-                const errors = error.response?.data.errors;
-                setError((typeof errors === 'string' || errors instanceof String) ? errors : errors.message);
-            });
-        }
-    });
+        WebAppClient.getUserContests({ sorting }, response => {
+            setContests(response);
+        }, error => {
+            setError(buildError(error));
+        });
+    }, [ sorting ]);
 
     return (
         <div>
@@ -31,6 +33,8 @@ export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper(
                 onClick={contests ? contests.map(contest => (
                     () => window.location.href = `/contest/${contest.id}`
                 )) : []}
+                sorting={sorting}
+                setSorting={setTableSorting}
             />
             <AlertPrompt text={errorMessage} />
         </div>

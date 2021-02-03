@@ -8,17 +8,18 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Spinner from 'react-bootstrap/Spinner';
+//import Spinner from 'react-bootstrap/Spinner';
 import Image from 'react-bootstrap/Image';
 
-import { HomePage, LoginPage, RegisterPage, UsersPage, ContestsController, ContestController, MyContestsPage, ContestPage, TaskControllerPage, TaskPage, CreateTaskPage, AddParticipantController } from './pages';
-import { getAuthToken, removeAuthToken, setAuthToken } from './api/auth';
+import * as Page from './pages';
+import { getAuthToken, removeAuthToken } from './api/auth';
 import { WebAppClient, Model } from './api';
 
 
 export const App: React.FunctionComponent = ()=> {
     const [user, setUser] = useState<Model.User | undefined | null>(undefined);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         const isLoggedIn = getAuthToken() != null;
     
@@ -27,7 +28,7 @@ export const App: React.FunctionComponent = ()=> {
                 WebAppClient.getMe(response => {
                     setUser({...response});
                 }, error => {
-                    removeAuthToken();
+                    // removeAuthToken();
                     setUser(null);
                 });
             } else {
@@ -46,7 +47,7 @@ export const App: React.FunctionComponent = ()=> {
     return (
         <Router>
                 <div>
-                    <Navbar bg="primary" variant="dark">
+                    <Navbar bg="primary" variant="dark" >
                         <Nav>
                             <Nav.Item>
                                 <Nav.Link as={Link} to="/">Home Page</Nav.Link>
@@ -70,6 +71,9 @@ export const App: React.FunctionComponent = ()=> {
                             <Nav.Item>
                                 <Nav.Link as={Link} to="/contests">Contests</Nav.Link>
                             </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link as={Link} to="/commissions">My Commissions</Nav.Link>
+                            </Nav.Item>
                         </Nav>
                         <Navbar.Collapse className="justify-content-end">
                             <Nav>
@@ -80,11 +84,11 @@ export const App: React.FunctionComponent = ()=> {
                                                 removeAuthToken();
                                                 window.location.reload();
                                             }}>Logout</Nav.Link>
-                                            {user.photoURL
-                                                ? <Image src={user.photoURL} rounded />
-                                                : <></>
-                                            }
                                         </Nav.Item>
+                                        {user.photoURL
+                                            ?<Nav.Item style={{ width: "40px", height: "40px" }} ><Image src={user.photoURL} roundedCircle fluid /></Nav.Item>
+                                            : <Nav.Item><Nav.Link disabled>{user.displayName}</Nav.Link></Nav.Item>
+                                        }
                                     </>
                                     :  <>
                                         <Nav.Item>
@@ -102,54 +106,74 @@ export const App: React.FunctionComponent = ()=> {
                     <Switch>
 
                         <Route path="/" exact>
-                            <HomePage user={user} />
+                            <Page.HomePage user={user} />
                         </Route>
 
-                        <Route path="/users" >
-                            <UsersPage user={user} />
+                        <Route path="/users"  exact>
+                            <Page.UsersPage user={user} />
                         </Route>
 
-                        <Route path="/login">
-                            <LoginPage user={user} />
+                        <Route path="/login" exact>
+                            <Page.LoginPage user={user} />
                         </Route>
-                        <Route path="/register">
-                            <RegisterPage user={user} />
-                        </Route>
-
-                        <Route path="/contests-controller">
-                            <ContestsController user={user}/>
+                        <Route path="/register" exact>
+                            <Page.RegisterPage user={user} />
                         </Route>
 
-                        <Route path="/contest-controller/:id/create-task">
-                            <CreateTaskPage user={user} />
+                        <Route path="/contests-controller" >
+                            <Page.ContestsController user={user}/>
                         </Route>
 
-                        <Route path="/contest-controller/:contestId/task/:id">
-                            <TaskControllerPage user={user} />
+                        <Route path="/contest-controller/:id/create-task" exact>
+                            <Page.CreateTaskPage user={user} />
                         </Route>
 
-                        <Route path="/contest-controller/:id">
-                            <ContestController user={user} />
+                        <Route path="/contest-controller/:contestId/task/:id" exact>
+                            <Page.TaskControllerPage user={user} />
                         </Route>
 
-                        <Route path="/contests">
-                            <MyContestsPage user={user} />
+                        <Route path="/contest-controller/:id" exact>
+                            <Page.ContestController user={user} />
                         </Route>
 
-                        <Route path="/contest/:contestId/task/:id">
-                            <TaskPage user={user} />
+                        <Route path="/contests" exact>
+                            <Page.MyContestsPage user={user} />
                         </Route>
 
-                        <Route path="/contest/:contestId/task-controller/:id">
-                            <TaskControllerPage user={user} />
+                        <Route path="/contest/:contestId/task/:id" exact>
+                            <Page.TaskPage user={user} />
                         </Route>
 
-                        <Route path="/contest/:id">
-                            <ContestPage user={user} />
+                        <Route path="/contest/:contestId/task-controller/:id" exact>
+                            <Page.TaskControllerPage user={user} />
                         </Route>
 
-                        <Route path="/join-contest/:contest_secret">
-                            <AddParticipantController user={user} />
+                        <Route path="/contest/:id" exact>
+                            <Page.ContestPage user={user} />
+                        </Route>
+
+                        <Route path="/join-contest/:contest_secret" exact>
+                            <Page.AddParticipantController user={user} />
+                        </Route>
+
+                        <Route path="/commissions" exact>
+                            <Page.CommissionsContestsPage user={user} />
+                        </Route>
+
+                        <Route path="/commissions/:id" exact>
+                            <Page.CommissionsSolutionsPage user={user} />
+                        </Route>
+                        
+                        <Route path="/contest/:contestId/task/:taskId/solution/:id" exact>
+                            <Page.CommissionsSolutionPage user={user} />
+                        </Route>
+
+                        <Route path="/XD" exact>
+                            <Page.HelloThere />
+                        </Route>
+
+                        <Route>
+                            <div>404 Page not found</div>
                         </Route>
 
                     </Switch>

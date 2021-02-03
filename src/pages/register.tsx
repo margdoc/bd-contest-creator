@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { WebAppClient } from "../api";
 import { setAuthToken } from "../api/auth";
 import { AccessWrapper, PageProps, AlertPrompt, FormWrapper } from './utils';
-import { signInWithPopup, GoogleProvider } from '../api/firebase';
+import { signInWithPopup, GoogleProvider, register as registerWithFirebase } from '../api/firebase';
 
 export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedOut")(({ user }) => {
     const [errorMessage, setError] = useState("");
@@ -24,12 +23,17 @@ export const RegisterPage: React.FunctionComponent<PageProps> = AccessWrapper("L
             return;
         }
 
-        WebAppClient.postRegister({ displayName, email, password }, 
-        response => {
-            setAuthToken(response.token);
-            window.location.href = '/';
+        registerWithFirebase({ displayName, email, password }, 
+        async (response) => {
+            if (!response) {
+                setError('Firebase returned null');
+            }
+            else {
+                setAuthToken(await response.getIdToken());
+                window.location.href = '/';
+            }
         }, error => {
-            setError(error.response?.data.errors);
+            setError(error.message);
         });
     };
 

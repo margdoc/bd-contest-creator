@@ -1,0 +1,7 @@
+{
+    "localhost": true,
+    "urls": {
+        "frontend": "http://localhost:3006",
+        "backend": "http://localhost:3000"
+    }
+}

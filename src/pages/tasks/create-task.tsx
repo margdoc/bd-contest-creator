@@ -17,9 +17,10 @@ export const CreateTaskPage: React.FunctionComponent<PageProps> = AccessWrapper(
     const create = (event: React.FormEvent) => {
         event.preventDefault();
         
+        const title: string = (document.getElementById("task-title")  as HTMLInputElement).value;
         const content: string = (document.getElementById("task-content")  as HTMLInputElement).value;
 
-       WebAppClient.postCreateTask({ contest_id: parseInt(id), text: content }, response => {
+       WebAppClient.postCreateTask({ title, contest_id: parseInt(id), text: content }, response => {
             window.location.href = `/contest-controller/${id}`;
         }, error => {
             const errors = error.response?.data.errors;
@@ -33,8 +34,12 @@ export const CreateTaskPage: React.FunctionComponent<PageProps> = AccessWrapper(
         <h4>Create Task</h4>
             <Form>
                 <Form.Group>
+                    <Form.Label>Title</Form.Label><br/>
+                    <Form.Control type="text" id="task-title"  />
+                </Form.Group>
+                <Form.Group>
                     <Form.Label>Content</Form.Label><br/>
-                    <Form.Control as={"textarea"} id="task-content"  />
+                    <Form.Control as={"textarea"} id="task-content" style={{ resize: 'both' }} />
                 </Form.Group>
                 <Button type="submit" onClick={create}>Create</Button>
             </Form>

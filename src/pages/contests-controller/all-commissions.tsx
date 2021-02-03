@@ -4,7 +4,7 @@ import { Table } from '../../components';
 import { AccessWrapper, PageProps, AlertPrompt, dateToString, buildError } from '../utils';
 import { WebAppClient, Model} from '../../api';
 
-export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("ContestCreator")(({ user }) => {
+export const CommissionsContestsPage: React.FunctionComponent<PageProps> = AccessWrapper("LoggedIn")(({ user }) => {
     const [contests, setContests] = useState<Array<Model.ContestResponse> | undefined>(undefined);
     const [errorMessage, setError] = useState<string>("");
     const [sorting, setSorting] = useState<Model.Sorting | undefined>(undefined);
@@ -14,7 +14,7 @@ export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper(
     }
 
     useEffect(() => {
-        WebAppClient.getAdminContests({ sorting }, response => {
+        WebAppClient.getCommissionContests({ sorting }, response => {
             setContests(response);
         }, error => {
             setError(buildError(error));
@@ -32,17 +32,10 @@ export const MyContestsPage: React.FunctionComponent<PageProps> = AccessWrapper(
                     createdAt: dateToString(contest.createdAt)
                 })) : []}
                 onClick={contests ? contests.map(contest => (
-                    () => window.location.href = `/contest-controller/${contest.id}`
+                    () => window.location.href = `/commissions/${contest.id}`
                 )) : []}
                 sorting={sorting}
                 setSorting={setTableSorting}
-                toDelete={contests && contests.map(contest => () =>
-                    WebAppClient.deleteContest({ id: parseInt(contest.id) }, () => {
-                        setContests(contests.filter(  _contest => _contest.id !== contest.id ));
-                    }, error =>
-                        setError(buildError(error))
-                    )
-                )}
             />
             <AlertPrompt text={errorMessage} />
         </div>

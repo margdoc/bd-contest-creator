@@ -4,8 +4,20 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import { Model } from '../api';
+import { AxiosError } from 'axios';
 
-export const URL = 'https://localhost:3006';
+import Config from '../config.json';
+
+export const URL = Config.urls.frontend;
+
+export const buildError = (error: AxiosError | string) => {
+    if (typeof error === 'string') {
+        return error;
+    }
+
+    const errors = error.response?.data.errors;
+    return (typeof errors === 'string' || errors instanceof String) ? errors : errors.message;
+}
 
 export type AccessType = "All" | "LoggedIn" | "LoggedOut" | "Admin" | "ContestCreator";
 
@@ -18,6 +30,14 @@ const Prompt: React.FunctionComponent<{ text?: string }> = ({ text }) => {
 };
 
 export {Prompt as AlertPrompt};
+
+export const InfoPrompt: React.FunctionComponent<{ text?: string }> = ({ text }) => {
+    if (text === "") {
+        return <></>;
+    }
+    
+    return <Alert key={"0"} variant={'info'}>{text}</Alert>;
+};
 
 export interface PageProps {
     user?: Model.User | null;

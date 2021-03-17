@@ -25,10 +25,7 @@
   "scripts": {
     "start": "PORT=3006 BROWSER=none react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "tunnel": "tsc tunnelling.ts &",
-    "serve": "yarn tunnel && serve -s build -l 3006"
+    "serve": "serve -s build -l 3006"
   },
   "eslintConfig": {
     "extends": [
